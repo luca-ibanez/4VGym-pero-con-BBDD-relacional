@@ -24,5 +24,11 @@ namespace _4VGym_pero_con_BBDD_relacional.Repositories
         {
             return await _context.ActivityTypes.FirstOrDefaultAsync(i => i.Id == id);
         }
+
+        //Para obtener por Nombre
+        public async Task<ActivityType?> GetByName(String name)
+        {
+            return await _context.ActivityTypes.FirstOrDefaultAsync(i => i.Name == name);
+        }
     }
 }

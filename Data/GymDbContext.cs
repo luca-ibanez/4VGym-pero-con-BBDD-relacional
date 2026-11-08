@@ -3,7 +3,7 @@ using _4VGym_pero_con_BBDD_relacional.Models;
 
 namespace _4VGym_pero_con_BBDD_relacional.Data
 {
-    public class GymDbContext
+    public class GymDbContext : DbContext
     {
         public GymDbContext(DbContextOptions<GymDbContext> options)
             : base(options)

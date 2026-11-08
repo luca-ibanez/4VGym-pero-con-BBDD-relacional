@@ -30,29 +30,12 @@ namespace _4VGym_pero_con_BBDD_relacional.Controllers
         [HttpPost]
         [ProducesResponseType(typeof(Activity), StatusCodes.Status201Created)]
         [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status400BadRequest)]
-        public ActionResult<Activity> CreateActivity([FromBody] Activity activity)
+        public async Task<ActionResult<Activity>> CreateActivityAsync([FromBody] Activity activity)
         {
             try
             {
 
-                Activity? activityCreated = _repository.Add(activity, out List<ErrorResponse> errors);
-                // TOLEARN: Aqui no puedo hacer el .Add ya que tendre que usar la base de datos SQL para añadir, y no puede tener un add asi
-                // Eso significa que tendre que seguramente hacer toda la validacion que antes se hacia en el Repository aqui en vez
-
-                //Chequear que existan todos los monitores
-                var idsDeInstructoresPasador = activity.Instructors.Select(i => i.Id).Distinct().ToList();
-                // TOLEARN: Aqui devuelve una lista despues de coger los IDs de los instructores de la lista de instructores del activity que nos dio, .Distinct para que todos los cogidos sean unicos
-                var idsDeInstructoresExistentes = await _repository.Instructors.Where(i => idsDeInstructoresPasador.Contains(i.Id)).Select(i => i.Id).ToListAsync();
-                // TOLEARN: Aqui devuelve una lista de todos los instructores que tienen esa ID
-
-                if (idsDeInstructoresExistentes.Count != idsDeInstructoresPasador.Count)
-                {
-                    return BadRequest(new ErrorResponse(2, "Hay instructores puestos que no existen en la base de datos"));
-                }
-                //Chequear que la fecha sea correcta
-                if (activity.DateStart > activity.DateEnd) {
-                    return BadRequest(new ErrorResponse(3, "La fecha inicial es mayor que la fecha final."));
-                }
+                Activity? activityCreated = await _repository.Add(activity);
 
                 //Ahora despues de todos los filtros para comprobar que todo esta bien, habria que añadirlo.
                 //Pero segun el trabajo no hemos visto inserciones en Bases de datos a si que no lo insertamos.

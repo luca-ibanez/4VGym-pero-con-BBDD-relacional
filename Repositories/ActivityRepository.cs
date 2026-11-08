@@ -17,8 +17,9 @@ namespace _4VGym_pero_con_BBDD_relacional.Repositories
             _repositoryInstructor = repositoryInstructor;
         }
 
-        public async Task<Activity> Add(Activity activity, out List<ErrorResponse> errorResponse)
+        public async Task<Activity> Add(Activity activity)
         {
+            List<ErrorResponse> errorResponse; //TODO: Poner esto en el out, descubrir como sacarlo.
             errorResponse = new List<ErrorResponse>();
             //Chequear si existe el tipo de actividad
             if (_repositoryActivityType.GetById(activity.ActivityTypeId) == null)

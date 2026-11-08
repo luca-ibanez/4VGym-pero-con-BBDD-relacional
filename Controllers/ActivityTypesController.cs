@@ -1,6 +1,6 @@
-﻿using _4VGym_pero_con_BBDD_relacional.Data;
-using _4VGym_pero_con_BBDD_relacional.Dtos;
+﻿using _4VGym_pero_con_BBDD_relacional.Dtos;
 using _4VGym_pero_con_BBDD_relacional.Models;
+using _4VGym_pero_con_BBDD_relacional.Repositories;
 using Microsoft.AspNetCore.Mvc;
 
 namespace _4VGym_pero_con_BBDD_relacional.Controllers
@@ -9,10 +9,10 @@ namespace _4VGym_pero_con_BBDD_relacional.Controllers
     [Route("activity-types")]
     public class ActivityTypesController : ControllerBase
     {
-        private readonly GymDbContext _repository;
+        private readonly ActivityTypeRepository _repository;
 
         // Inyectamos la clase concreta del repositorio
-        public ActivityTypesController(GymDbContext repository)
+        public ActivityTypesController(ActivityTypeRepository repository)
         {
             _repository = repository;
         }
@@ -58,7 +58,7 @@ namespace _4VGym_pero_con_BBDD_relacional.Controllers
         {
             try
             {
-                // 1. Validación básica de la entrada, objeto no nulo y obligatorio nombre de actividad
+                // Validación básica de la entrada, objeto no nulo y obligatorio nombre de actividad
                 // Esto se llaman condiciones de barrera!!!
                 if (activityType == null)
                 {
@@ -74,24 +74,13 @@ namespace _4VGym_pero_con_BBDD_relacional.Controllers
                     return BadRequest(new ErrorResponse(5, "The name is unique, there is already another ActivityType with the same Name"));
                 }
 
-
-                // 2. Insertar/Guardar el objeto usando el repositorio
-                ActivityType createdActivityType = _repository.Add(activityType);
-                //Mandamos el createdActivityType ya que ese si que tiene una ID, al contrario que el que recivimos
-
-                // 3. Retornar respuesta 201 Created con la ubicación o el objeto creado
-                return StatusCode(StatusCodes.Status201Created, createdActivityType);
+                //Retornar respuesta 201 Created con la ubicación o el objeto creado
+                return StatusCode(StatusCodes.Status201Created);
             }
             catch (Exception)
             {
-                return StatusCode(StatusCodes.Status500InternalServerError,
-                                  new ErrorResponse(1, "An internal server error occurred"));
-
+                return StatusCode(StatusCodes.Status500InternalServerError, new ErrorResponse(1, "An internal server error occurred"));
             }
         }
-
-        //Hay que hacer una clase llamada actividad?
-        //Cosas como alguien no dando numeros negativos tambien hay que chequearlo
-
     }
 }

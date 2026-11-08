@@ -1,6 +1,6 @@
 @_4VGym_pero_con_BBDD_relacional_HostAddress = http://localhost:5019
 
-GET {{_4VGym_pero_con_BBDD_relacional_HostAddress}}/weatherforecast/
+GET {{_4VGym_pero_con_BBDD_relacional_HostAddress}}/activity-types
 Accept: application/json
 
 ###

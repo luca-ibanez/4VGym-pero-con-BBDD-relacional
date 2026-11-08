@@ -1,6 +1,7 @@
 ﻿using _4VGym_pero_con_BBDD_relacional.Data;
 using _4VGym_pero_con_BBDD_relacional.Dtos;
 using _4VGym_pero_con_BBDD_relacional.Models;
+using _4VGym_pero_con_BBDD_relacional.Repositories;
 using Microsoft.AspNetCore.Mvc;
 
 namespace _4VGym_pero_con_BBDD_relacional.Controllers
@@ -9,10 +10,10 @@ namespace _4VGym_pero_con_BBDD_relacional.Controllers
     [Route("instructors")]
     public class InstructorsController : ControllerBase
     {
-        private readonly GymDbContext _repository;
+        private readonly InstructorRepository _repository;
 
         // Inyectamos la clase concreta del repositorio
-        public InstructorsController(GymDbContext repository)
+        public InstructorsController (InstructorRepository repository)
         {
             _repository = repository;
         }
@@ -86,7 +87,7 @@ namespace _4VGym_pero_con_BBDD_relacional.Controllers
                     return BadRequest(new ErrorResponse(5, "Ya hay un monitor con ese nombre y correo"));
                     //Solo sale si tiene mismo nombre y correo
                 }
-                _repository.DarDeAlta(instructorNuevo);
+                
                 return Ok(instructors);
             }
             catch (Exception)
