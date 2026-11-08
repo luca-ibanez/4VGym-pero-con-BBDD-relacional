@@ -11,6 +11,12 @@ namespace _4VGym_pero_con_BBDD_relacional.Repositories
             _context = context;
         }
 
+        //Para obtener todos
+        public IEnumerable<Instructor> GetAll()
+        {
+            return _context.Instructors;
+        }
+
         //Para obtener por ID
         public async Task<Instructor?> GetById(int id)
         {
@@ -26,5 +32,8 @@ namespace _4VGym_pero_con_BBDD_relacional.Repositories
         {
             return await _context.Instructors.SingleOrDefaultAsync(i => i.Email == email);
         }
+
+
+
     }
 }

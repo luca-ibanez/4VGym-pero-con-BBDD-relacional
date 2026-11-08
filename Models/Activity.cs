@@ -7,7 +7,8 @@ namespace _4VGym_pero_con_BBDD_relacional.Models
     {
         public int Id { get; set; }
 
-        public int? ActivityTypeId { get; set; }
+        public int ActivityTypeId { get; set; }
+        //Nota: Cambie esto de int? a int
 
         public int MaxParticipants { get; set; }
 

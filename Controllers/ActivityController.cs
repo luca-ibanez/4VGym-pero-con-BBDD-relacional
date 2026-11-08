@@ -1,6 +1,7 @@
 ﻿using _4VGym_pero_con_BBDD_relacional.Data;
 using _4VGym_pero_con_BBDD_relacional.Dtos;
 using _4VGym_pero_con_BBDD_relacional.Models;
+using _4VGym_pero_con_BBDD_relacional.Repositories;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -11,9 +12,9 @@ namespace _4VGym_pero_con_BBDD_relacional.Controllers
     public class ActivityController : ControllerBase
     {
         //Recordar hacer estas otras dos cosas. La primera es para crear una propiedad llamada _repository
-        private readonly GymDbContext _repository;
-        // TOLEARN: Aqui basicamente hacemos que se mire a GymDbContext, ya que lo usaremos en vez del active repository
-        public ActivityController(GymDbContext repository)
+        private readonly ActivityRepository _repository;
+
+        public ActivityController(ActivityRepository repository)
         {
             _repository = repository;
         }
@@ -29,20 +30,14 @@ namespace _4VGym_pero_con_BBDD_relacional.Controllers
         [HttpPost]
         [ProducesResponseType(typeof(Activity), StatusCodes.Status201Created)]
         [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status400BadRequest)]
-        public async Task<ActionResult<Activity>> CreateActivity([FromBody] Activity activity)
+        public ActionResult<Activity> CreateActivity([FromBody] Activity activity)
         {
             try
             {
 
-                //Activity? activityCreated = _repository.Add(activity, out List<ErrorResponse> errors);
+                Activity? activityCreated = _repository.Add(activity, out List<ErrorResponse> errors);
                 // TOLEARN: Aqui no puedo hacer el .Add ya que tendre que usar la base de datos SQL para añadir, y no puede tener un add asi
                 // Eso significa que tendre que seguramente hacer toda la validacion que antes se hacia en el Repository aqui en vez
-
-                //Chequear si ya existe (Por ID)
-                if (_repository.ActivityTypes.Contains(activity.ActivityType))
-                {
-                    return BadRequest(new ErrorResponse(1, "La actividad ya existe."));
-                }
 
                 //Chequear que existan todos los monitores
                 var idsDeInstructoresPasador = activity.Instructors.Select(i => i.Id).Distinct().ToList();
